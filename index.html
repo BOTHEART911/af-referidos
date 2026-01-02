@@ -3,8 +3,8 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <title>Referidos</title>
-  <link rel="icon" href="https://res.cloudinary.com/dqqeavica/image/upload/v1759166341/WhatsApp_mljaqm.webp">
+  <title>ANALISIS REFERIDOS</title>
+  <link rel="icon" href="https://res.cloudinary.com/dqqeavica/image/upload/v1760657121/LIDERES_yjpryz.png" type="image/png">
   <meta name="theme-color" content="#007BFF" />
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.bootstrap5.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
   <style>
     body, html {
       font-family: Arial, sans-serif;
@@ -25,7 +26,7 @@
       align-items: flex-start;
       height: 100%;
       min-height: 100vh;
-      background-color: #f3f4f6;
+      background-color: #f3f4f6; /* fondo liso */
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
@@ -38,59 +39,112 @@
       padding: 0 !important;
       background: rgba(255,255,255,0.05);
     }
-    .titulo-contenedor h1, .titulo-contenedor, h1.titulo-animado {
+    .titulo-contenedor { perspective: 1200px; text-align: center; }
+    .titulo-animado {
       font-size: 2rem;
       font-weight: bold;
-      color: green;
+      color: #007BFF;
       text-shadow: 3px 3px 3px #031732;
       animation: rotate 5s infinite linear, stay 10s infinite;
     }
     @keyframes rotate { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
     @keyframes stay { 0%, 25% { transform: rotateY(0deg);} 50%, 75% { transform: rotateY(0deg);} 100% { transform: rotateY(360deg);} }
-    .image-container img { max-width: 220px; border-radius: 2px; }
+
     .copyright { font-size: 0.85em; color: #666; margin-top: 4px; text-align: center; }
+
     #contactosForm {
-      margin: 30px auto 0 auto; max-width: 400px; background: rgba(255,255,255,0.97);
-      border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.2); padding: 24px 16px 10px 16px; display: block;
+      margin: 30px auto 0 auto;
+      max-width: 400px;
+      background: rgba(255,255,255,0.97);
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      padding: 24px 16px 10px 16px;
+      display: block;
       transition: opacity .25s ease, transform .25s ease;
     }
     #contactosForm label { font-weight: bold; color: #1257b7; }
+
     .boton-efecto {
-      background: linear-gradient(90deg, #1257b7, #3ea652); color: white; border: none; padding: 8px 16px; border-radius: 7px;
-      font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 1px 2px 4px #ccc;
+      background: #fff;
+      color: #222;
+      border: 2px solid #007bff;
+      padding: 10px 0;
+      border-radius: 7px;
+      font-size: 1.13em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      box-shadow: 0 2px 8px #b9c7e0;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 0.5px;
     }
-    .boton-efecto:hover { background: linear-gradient(90deg, #3ea652, #1257b7); }
+    .boton-efecto:hover {
+      background: #007bff !important;
+      color: #fff !important;
+      border-color: #007bff;
+    }
+
     .error { color: red; margin-bottom: 8px; text-align: center; font-weight: bold; }
+
     #tituloLider {
-      margin: 20px 0 5px 0; font-size: 1.5em; color: #155724; font-weight: bold; text-align: center; letter-spacing: 1px; text-shadow: 1px 1px 1px #b7e0c3;
+      margin: 20px 0 5px 0;
+      font-size: 1.6em;
+      color: #007bff;
+      font-weight: bold;
+      text-align: left;
+      letter-spacing: 1px;
+      text-shadow: none !important;
     }
+
     #tablaReferidos th, #tablaReferidos td, #tablaReferidos thead th, #tablaReferidos tfoot th {
-      text-align: center !important; vertical-align: middle !important;
+      text-align: center !important;
+      vertical-align: middle !important;
     }
-    #tablaReferidos { width: 100% !important; background: rgba(255,255,255,0.98); border-radius: 10px; margin-top: 20px; }
-    .btn-votacion { background-color: #e74c3c !important; color: white !important; border-radius: 6px !important; font-weight: bold; font-size: 1em; padding: 3px 10px !important; margin-right: 3px; }
+    #tablaReferidos {
+      width: 100% !important;
+      background: rgba(255,255,255,0.98);
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-votacion {
+      background-color: #e74c3c !important;
+      color: white !important;
+      border-radius: 6px !important;
+      font-weight: bold;
+      font-size: 1em;
+      padding: 3px 10px !important;
+      margin-right: 3px;
+    }
     .btn-votacion.verde { background-color: #27ae60 !important; }
-    .btn-whatsapp { background: #25D366 !important; color: white !important; border-radius: 6px !important; font-size: 1.15em !important; padding: 3px 10px !important; margin-left: 3px; display: inline-flex; align-items: center; justify-content: center; }
-    .btn-whatsapp i { font-size: 1.3em !important; color: white !important; vertical-align: middle; }
-    .resaltado-cambio { background: #fff6b2 !important; transition: background 1.6s; }
-    .table-responsive { overflow-x: auto; }
-    .modal-content { border-radius: 12px; }
-    .swal2-popup.swal2-responsive-popup { width: 350px !important; max-width: 95vw; font-size: 15px !important; }
     .btn-votacion.azul { background-color: #007BFF !important; }
     .btn-votacion.gris { background-color: #6c757d !important; color: #fff !important; }
     .btn-votacion.naranja { background-color: #f39c12 !important; color: #fff !important; }
 
-    #tituloLider { color: #007bff !important; font-weight: bold; font-size: 1.6em; text-align: left; margin: 20px 0 5px 0; letter-spacing: 1px; text-shadow: none !important; }
-
-    .titulo-contenedor { perspective: 1200px; text-align: center; }
-    .titulo-animado { font-size: 2rem; font-weight: bold; color: #007BFF; text-shadow: 3px 3px 3px #031732; animation: rotate 5s infinite linear, stay 10s infinite; }
-
-    #contactosForm { box-shadow: 0 0 16px rgba(0,0,0,0.23); position: relative; }
-    #contactosForm .titulo-contenedor h1, #contactosForm .titulo-contenedor h1.titulo-animado {
-      color: #007bff !important; text-shadow: none !important; font-size: 2.2rem; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold; text-align: center; animation: none;
+    .btn-whatsapp {
+      background: #25D366 !important;
+      color: white !important;
+      border-radius: 6px !important;
+      font-size: 1.15em !important;
+      padding: 3px 10px !important;
+      margin-left: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    #contactosForm > p:first-of-type { color: #666 !important; text-align: center !important; font-size: 13px !important; margin-top: 0; margin-bottom: 16px; }
-    #contactosForm label[for="documento"] { display: block; color: #007bff !important; font-weight: bold; font-size: 1.11em; margin-bottom: 2px; margin-top: 10px; }
+    .btn-whatsapp i { font-size: 1.3em !important; color: white !important; }
+
+    .resaltado-cambio { background: #fff6b2 !important; transition: background 1.6s; }
+
+    .table-responsive { overflow-x: auto; }
+    .modal-content { border-radius: 12px; }
+
+    .swal2-popup.swal2-responsive-popup {
+      width: 350px !important;
+      max-width: 95vw;
+      font-size: 15px !important;
+    }
 
     .loader{
       position:fixed; inset:0;
@@ -155,10 +209,6 @@
       line-height: 0;
       color: #007bff;
     }
-    .input-pass-group .toggle-pass:focus-visible {
-      outline: 2px solid #80bdff;
-      border-radius: 4px;
-    }
     #contactosForm #btn-iniciar-sesion {
       display: block;
       width: max-content;
@@ -169,11 +219,19 @@
       letter-spacing: .3px;
       border-radius: 8px;
     }
-    #contactosForm .btn-center{
+    .btn-center{
       display: flex;
       justify-content: center;
     }
-    .btn-icon-db{ background:transparent; border:0; padding:4px; margin-left:8px; vertical-align:middle; cursor:pointer; color:#c0392b; }
+    .btn-icon-db{
+      background:transparent;
+      border:0;
+      padding:4px;
+      margin-left:8px;
+      vertical-align:middle;
+      cursor:pointer;
+      color:#c0392b;
+    }
     .btn-icon-db svg{ width:16px; height:16px; display:inline-block; vertical-align:middle; }
   </style>
 </head>
@@ -186,10 +244,10 @@
     </div>
   </div>
 
-  <!-- Formulario de acceso -->
+  <!-- Formulario acceso -->
   <form id="contactosForm">
     <div class="titulo-contenedor">
-      <h1 class="titulo-animado">INGRESO ADMINISTRADOR</h1>
+      <h1 class="titulo-animado">INGRESO A LIDERES</h1>
     </div>
     <p style="color: grey; text-align: justify; font-size: 13px;">
       <b>Este Portal es de uso Exclusivo del Administrador.</b><br>
@@ -224,7 +282,7 @@
     </div>
   </form>
 
-  <!-- Contenedor de la tabla -->
+  <!-- Contenedor tabla -->
   <main class="container mt-3" id="mainTableContainer" style="display:none;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top:10px; margin-bottom: 0;">
       <div id="tituloLider"></div>
@@ -233,7 +291,7 @@
           <div class="copyright" style="font-size:0.65em;">
             Copyright © <a href="https://wa.me/573103230712" target="_blank"><b>OSCAR POLANIA</b></a>
           </div>
-          <button class="boton-efecto" id="btn-cerrar-sesion" onclick="cerrarSesion()" style="background:#C0392B; color:#fff;">Cerrar Sesión</button>
+          <button class="boton-efecto" id="btn-cerrar-sesion" onclick="cerrarSesion()" style="background:#C0392B; color:#fff; border-color:#C0392B;">Cerrar Sesión</button>
         </div>
       </div>
     </div>
@@ -247,10 +305,13 @@
     </div>
   </main>
 
-  <!-- Modal Votación (igual que tenías) -->
-  <!-- ... (conservo todo tu HTML de modales y scripts tal cual, solo cambian las llamadas a la API) ... -->
+  <!-- Modal Votación -->
+  <!-- (aquí va tu modal de votación tal cual, no lo recorto por espacio; lo puedes dejar igual que en tu HTML original) -->
 
-  <!-- JS y dependencias -->
+  <!-- Modal WhatsApp -->
+  <!-- (igual, déjalo como en tu HTML original) -->
+
+  <!-- JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
@@ -267,7 +328,7 @@
 
   <script>
     // URL del Web App
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzOZfjaBk5PF-0ytQ0pmE1EL4e8EzhLTAhURFjAqFMJbd3NJS1K1IHtpLgAzhxP09hv/exec'; // reemplaza por la URL de despliegue actual
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzOZfjaBk5PF-0ytQ0pmE1EL4e8EzhLTAhURFjAqFMJbd3NJS1K1IHtpLgAzhxP09hv/exec';
 
     const SOUNDS = {
       question: 'https://res.cloudinary.com/dqqeavica/video/upload/v1759011577/Pay_fail_ls2aif.mp3',
@@ -301,7 +362,6 @@
         return __fire(options, ...rest);
       }
     }
-
     const loader = document.getElementById('loader');
     let loadingCount = 0, loaderTimer = null;
     function startLoading(){
@@ -319,10 +379,10 @@
       }
     }
 
-    // API adaptada al nuevo backend
+    // API
     async function apiGetTodasFilas() {
       startLoading();
-      try{
+      try {
         const body = new URLSearchParams({ action: 'getTodasFilas' });
         const resp = await fetch(WEB_APP_URL, {
           method: 'POST',
@@ -335,19 +395,13 @@
         return j.data;
       } finally { stopLoading(); }
     }
-
-    async function apiGuardarVotacion(payload) {
+    async function apiGuardarVotacion({ idxFila, nuip, departamento, municipio, puesto, direccion, mesa }) {
       startLoading();
-      try{
+      try {
         const body = new URLSearchParams({
           action: 'guardarVotacion',
-          idxFila: payload.idxFila != null ? String(payload.idxFila) : '',
-          nuip: payload.nuip,
-          departamento: payload.departamento,
-          municipio: payload.municipio,
-          puesto: payload.puesto,
-          direccion: payload.direccion,
-          mesa: payload.mesa
+          idxFila: idxFila != null ? String(idxFila) : '',
+          nuip, departamento, municipio, puesto, direccion, mesa
         });
         const resp = await fetch(WEB_APP_URL, {
           method: 'POST',
@@ -360,10 +414,9 @@
         return j;
       } finally { stopLoading(); }
     }
-
-    async function apiEliminarFilas(nuips) {
+    async function apiEliminarFilas({ nuips }) {
       startLoading();
-      try{
+      try {
         const body = new URLSearchParams({
           action: 'eliminarFilas',
           nuips: JSON.stringify(nuips || [])
@@ -380,25 +433,27 @@
       } finally { stopLoading(); }
     }
 
+    // Estado
+    let nombreLider = "ADMINISTRADOR";
     let filasFiltradas = [];
     let encabezados = [];
     let tabla;
-    let selectedNuips = new Set();
+    let documentoGuardado = "";
     let deleteMode = false;
+    let selectedNuips = new Set();
     let filaVotacion = null;
     let filaWhatsapp = null;
 
-    // Columnas a ocultar por defecto (no depende de residencia D ni estado O)
     const columnasOcultas = ["CONTACTO", "REFERENCIA", "LIDER", "DEPARTAMENTO", "PUESTO", "DIRECCION", "MESA", "AÑO", "MES", "DIA"];
 
     async function validarDocumento() {
       const clave = document.getElementById('documento').value.trim();
       if (!clave){
-        Swal.fire({ icon:'warning', title:'Clave requerida', text:'Ingresa la clave de acceso.' });
+        Swal.fire({ icon:'warning', title:'Clave requerida', text:'Ingresa la clave de acceso.', customClass:{popup:'swal2-responsive-popup'} });
         return;
       }
       if (clave !== '202402028'){
-        Swal.fire({ icon:'error', title:'Clave incorrecta', text:'Verifica la clave e inténtalo de nuevo.' });
+        Swal.fire({ icon:'error', title:'Clave incorrecta', text:'Verifica la clave e inténtalo de nuevo.', customClass:{popup:'swal2-responsive-popup'} });
         return;
       }
 
@@ -412,20 +467,30 @@
         didOpen: () => { Swal.showLoading(); }
       });
 
-      try{
+      try {
         const res = await apiGetTodasFilas();
         Swal.close();
 
         encabezados = res.encabezados || [];
         filasFiltradas = Array.isArray(res.filas) ? res.filas : [];
+        documentoGuardado = clave;
+        document.getElementById('tituloLider').textContent = "Líder ADMINISTRADOR";
 
-        document.getElementById('tituloLider').textContent = 'Administrador';
+        if (!filasFiltradas.length){
+          Swal.fire({
+            icon: 'info',
+            title: 'No hay registros',
+            html: 'La hoja PRINCIPAL está vacía.',
+            customClass:{popup:'swal2-responsive-popup'}
+          });
+          return;
+        }
 
         ocultarFormulario();
         inicializarTabla();
-      } catch(e){
+      } catch (e){
         Swal.close();
-        Swal.fire({ icon:'error', title:'Error', text:String(e) });
+        Swal.fire({ icon:'error', title:'Error', text:String(e), customClass:{popup:'swal2-responsive-popup'} });
       }
     }
 
@@ -440,15 +505,24 @@
     }
     function cerrarSesion() {
       playSoundOnce(SOUNDS.logout);
+      nombreLider = "ADMINISTRADOR";
       filasFiltradas = [];
       encabezados = [];
+      documentoGuardado = "";
       if (tabla) { tabla.destroy(); }
       mostrarFormulario();
       document.getElementById('documento').value = "";
     }
 
+    function centrarEncabezadosTabla() {
+      $('#tablaReferidos thead th, #tablaReferidos tfoot th')
+        .removeClass('text-start text-left text-end text-right')
+        .addClass('text-center')
+        .css('text-align', 'center');
+    }
+
     function inicializarTabla() {
-      let colsDT = encabezados.map(h => ({ title: h }));
+      let colsDT = encabezados.map(header => ({ title: header }));
       colsDT.push({ title: "Votación" });
       colsDT.push({ title: "WhatsApp" });
       colsDT.push({ title: "Seleccionar" });
@@ -468,17 +542,86 @@
         .filter(idx=>idx>-1);
 
       const colvisButton = { extend: 'colvis', text: 'Filtrar Columnas' };
-      const buttonsArr = [
-        { extend: 'copy',  text: '<i class="bi bi-clipboard-fill"></i>', className: 'btn btn-secondary', exportOptions: { columns: ':visible' }, title: 'Referidos Administrador' },
-        { extend: 'excel', text: '<i class="bi bi-file-earmark-excel-fill"></i>', className: 'btn btn-success',  exportOptions: { columns: ':visible' }, filename: 'Referidos Administrador', title: 'Referidos Administrador' },
-        { extend: 'pdf',   text: '<i class="bi bi-file-earmark-pdf-fill"></i>',   className: 'btn btn-danger',   exportOptions: { columns: ':visible' }, filename: 'Referidos Administrador', title: 'Referidos Administrador' },
-        { extend: 'print', text: '<i class="bi bi-printer-fill"></i>',            className: 'btn btn-info',     exportOptions: { columns: ':visible' }, title: 'Referidos Administrador' },
+
+      const adminExportButtons = [
+        { extend: 'copy',  text: '<i class="bi bi-clipboard-fill"></i>', className: 'btn btn-secondary', exportOptions: { columns: ':visible' }, title: 'Referidos ' + nombreLider },
+        { extend: 'excel', text: '<i class="bi bi-file-earmark-excel-fill"></i>', className: 'btn btn-success',  exportOptions: { columns: ':visible' }, filename: 'Referidos ' + nombreLider, title: 'Referidos ' + nombreLider },
+        { extend: 'pdf',   text: '<i class="bi bi-file-earmark-pdf-fill"></i>',   className: 'btn btn-danger',   exportOptions: { columns: ':visible' }, filename: 'Referidos ' + nombreLider, title: 'Referidos ' + nombreLider },
+        { extend: 'print', text: '<i class="bi bi-printer-fill"></i>',            className: 'btn btn-info',     exportOptions: { columns: ':visible' }, title: 'Referidos ' + nombreLider },
         colvisButton
       ];
 
       const idxVotacion = colsDT.length - 3;
       const idxWhatsapp = colsDT.length - 2;
       const idxSeleccion = colsDT.length - 1;
+
+      const btnEliminar = {
+        text: `Eliminar <span class="ms-1 align-middle"><i class="bi bi-file-earmark-minus-fill"></i></span>`,
+        className: 'btn btn-outline-danger',
+        attr: { id: 'btnEliminarFilas' },
+        action: function(e, dt) {
+          playSoundOnce(SOUNDS.warning);
+          deleteMode = true;
+          selectedNuips.clear();
+          dt.column(idxSeleccion).visible(true);
+          $('#btnEliminarFilas').addClass('d-none');
+          $('#btnConfirmarEliminacion, #btnDescartarEliminacion').removeClass('d-none');
+          Swal.fire({
+            icon: 'warning',
+            title: 'Modo eliminación',
+            text: 'Selecciona una o varias filas para eliminar.',
+            timer: 1800,
+            showConfirmButton: false,
+            customClass: { popup: 'swal2-responsive-popup' }
+          });
+        }
+      };
+
+      const btnConfirmar = {
+        text: `Confirmar <span class="ms-1 align-middle"><i class="bi bi-trash-fill"></i></span>`,
+        className: 'btn btn-danger d-none',
+        attr: { id: 'btnConfirmarEliminacion' },
+        action: async function(e, dt) {
+          if (selectedNuips.size === 0) {
+            Swal.fire({ icon: 'info', title: 'Sin selección', text: 'Selecciona al menos una fila.', customClass: { popup: 'swal2-responsive-popup' } });
+            return;
+          }
+          const nuips = Array.from(selectedNuips);
+          try {
+            Swal.fire({ title: 'Eliminando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const res = await apiEliminarFilas({ nuips });
+            Swal.close();
+            if (!res || res.ok !== true) throw new Error(res && res.error ? res.error : 'No se pudo eliminar');
+            dt.rows(function(idx, data) {
+              return nuips.includes(String((data && data[0]) || ''));
+            }).remove().draw(false);
+            exitDeleteMode(dt);
+            playSoundOnce(SOUNDS.success);
+            Swal.fire({
+              icon: 'success',
+              title: 'Fila o filas eliminadas',
+              html: (res.eliminadas || 0) + ' fila(s) eliminada(s).',
+              timer: 3000,
+              showConfirmButton: false,
+              customClass: { popup: 'swal2-responsive-popup' }
+            });
+          } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Error al eliminar', text: String(err), customClass: { popup: 'swal2-responsive-popup' } });
+          }
+        }
+      };
+
+      const btnDescartar = {
+        text: `Descartar <span class="ms-1 align-middle"><i class="bi bi-x-square-fill"></i></span>`,
+        className: 'btn btn-secondary d-none',
+        attr: { id: 'btnDescartarEliminacion' },
+        action: function(e, dt) {
+          playSoundOnce(SOUNDS.back);
+          exitDeleteMode(dt);
+        }
+      };
+
+      const buttonsArr = [...adminExportButtons, btnEliminar, btnConfirmar, btnDescartar];
 
       tabla = $('#tablaReferidos').DataTable({
         language: { url: "//cdn.datatables.net/plug-ins/2.3.2/i18n/es-CO.json" },
@@ -510,7 +653,6 @@
                 municipio === "POR CONFIRMAR" ? "naranja" :
                 municipio === "SIN CONSULTAR" ? "azul"    :
                 municipio === "FLANDES"       ? "verde"   : "";
-
               return `<button class="btn-votacion${colorClass ? ' ' + colorClass : ''}" data-row="${meta.row}" onclick="abrirModalVotacion(${meta.row})">Votación</button>`;
             }
           },
@@ -535,7 +677,7 @@
             targets: idxSeleccion,
             orderable: false,
             searchable: false,
-            visible: true,
+            visible: false, // OCULTA al inicio
             className: 'text-center',
             render: function(data, type, row, meta) {
               const nuip = (row && row[0] != null) ? String(row[0]) : '';
@@ -546,42 +688,43 @@
         ]
       });
 
-      $('#tablaReferidos').on('change', 'input.row-select', function() {
+      tabla.off('draw');
+      tabla.on('draw', centrarEncabezadosTabla);
+      centrarEncabezadosTabla();
+
+      $('#tablaReferidos tbody').off('change', 'input.row-select');
+      $('#tablaReferidos tbody').on('change', 'input.row-select', function() {
         const nuip = String(this.dataset.nuip || '');
         if (!nuip) return;
         if (this.checked) selectedNuips.add(nuip);
         else selectedNuips.delete(nuip);
       });
+
+      function exitDeleteMode(dt) {
+        deleteMode = false;
+        selectedNuips.clear();
+        dt.column(idxSeleccion).visible(false);
+        $('#btnConfirmarEliminacion, #btnDescartarEliminacion').addClass('d-none');
+        $('#btnEliminarFilas').removeClass('d-none');
+      }
+      window.exitDeleteMode = exitDeleteMode;
     }
 
-    // Aquí mantienes todas tus funciones: abrirModalVotacion, guardar votación, abrirModalWhatsapp, copiarFilaInfo, etc.
-    // Solo asegúrate de que cuando llamen al backend usen apiGuardarVotacion y apiEliminarFilas definidos arriba.
+    // Aquí mantienes tus funciones abrirModalVotacion, guardar en formVotacion,
+    // abrirModalWhatsapp, copiarFilaInfo, etc., usando apiGuardarVotacion.
 
     // Toggle ver/ocultar clave
     (function(){
       const input = document.getElementById('documento');
       const btn = document.getElementById('toggleDocumento');
-      const ICON_EYE_SLASH = `
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-  <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
-  <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
-</svg>`;
-      const ICON_EYE = `
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-</svg>`;
-
+      const ICON_EYE_SLASH = btn.innerHTML;
+      const ICON_EYE = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg>';
       if (input && btn){
         btn.addEventListener('click', function(){
           const willShow = input.type === 'password';
           input.type = willShow ? 'text' : 'password';
           btn.setAttribute('aria-pressed', String(willShow));
           btn.innerHTML = willShow ? ICON_EYE : ICON_EYE_SLASH;
-          try {
-            input.focus();
-            input.setSelectionRange(input.value.length, input.value.length);
-          } catch(e){}
         });
       }
     })();
