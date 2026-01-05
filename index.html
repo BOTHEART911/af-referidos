@@ -347,14 +347,14 @@
                 <input class="form-check-input" type="checkbox" id="chkALaEspera"
                        onchange="onEstadoCheckboxChange(this, 'A LA ESPERA')">
                 <label class="form-check-label" for="chkALaEspera">
-                  Marcar solo el MUNICIPIO como "A LA ESPERA"
+                 Si el Documento correcto no aparece en Registraduría, marca "A LA ESPERA"
                 </label>
               </div>
               <div class="form-check mt-1">
                 <input class="form-check-input" type="checkbox" id="chkPorConfirmar"
                        onchange="onEstadoCheckboxChange(this, 'POR CONFIRMAR')">
                 <label class="form-check-label" for="chkPorConfirmar">
-                  Marcar solo el MUNICIPIO como "POR CONFIRMAR"
+                  Si necesitas averiguar el Documento correcto, marca "POR CONFIRMAR"
                 </label>
               </div>
             </div>
@@ -519,7 +519,7 @@
     let filaVotacion = null;
     let filaWhatsapp = null;
 
-    const columnasOcultas = ["CONTACTO", "REFERENCIA", "LIDER", "DEPARTAMENTO", "PUESTO", "DIRECCION", "MESA", "AÑO", "MES", "DIA"];
+    const columnasOcultas = ["CONTACTO", "REFERENCIA", "DEPARTAMENTO", "PUESTO", "DIRECCION", "MESA", "AÑO", "MES", "DIA"];
 
     async function validarDocumento() {
       const clave = document.getElementById('documento').value.trim();
