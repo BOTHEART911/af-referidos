@@ -834,16 +834,74 @@
       });
     })();
 
-    let ENCABEZADOS = ["NUIP", "DEPARTAMENTO", "MUNICIPIO", "PUESTO", "DIRECCIÓN", "MESA"];
-    function limpiarYSeparar(texto) {
-      let partes = texto.split(/[\t\n\r]+/).map(x => x.trim()).filter(x => x.length > 0);
-      if (partes.length >= 6 && ENCABEZADOS.every(e => partes[0].toUpperCase().includes(e))) partes = partes.slice(1);
-      if (partes.length >= 7 && ENCABEZADOS.every((e,i) => partes[i].toUpperCase() === e)) partes = partes.slice(6);
-      partes = partes.filter(x => !ENCABEZADOS.includes(x.toUpperCase()));
-      if (partes.length > 6) partes[5] = partes.slice(5).join(' ');
-      if (partes.length > 6) partes = partes.slice(0,6);
-      return partes;
+    const ENCABEZADOS = ["NUIP", "DEPARTAMENTO", "MUNICIPIO", "PUESTO", "DIRECCIÓN", "MESA"];
+
+  function limpiarYSeparar(texto) {
+    const raw = String(texto || "").trim();
+    if (!raw) return [];
+
+    const lines = raw
+      .split(/\r?\n/)
+      .map(l => l.trim())
+      .filter(Boolean);
+
+    // Normaliza para comparar sin tildes y en mayúsculas
+    const norm = (s) =>
+      String(s || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toUpperCase();
+
+    // Mapa de "etiqueta" -> "valor" (la línea siguiente)
+    const kv = {};
+    for (let i = 0; i < lines.length; i++) {
+      const key = norm(lines[i]);
+
+      // Ignorar encabezados "decorativos"
+      if (key === "DOCUMENTO DE IDENTIDAD") continue;
+
+      // Capturar solo las etiquetas que nos interesan (valor en la siguiente línea)
+      if (key === "PUESTO" || key === "MESA" || key === "DEPARTAMENTO" || key === "MUNICIPIO" || key === "DIRECCION" || key === "DIRECCIÓN") {
+        const next = (i + 1 < lines.length) ? lines[i + 1].trim() : "";
+        if (next) {
+          kv[key] = next;
+        }
+      }
     }
+
+    // 1) NUIP: sale de la línea con "C.C." o "CC" (ej: "C.C. 93435070")
+    //    Toma el primer bloque de 6 a 12 dígitos.
+    let nuip = "";
+    for (const l of lines) {
+      const n = norm(l);
+      if (n.includes("C.C") || n.includes(" CC") || n.startsWith("CC")) {
+        const m = l.match(/\b\d{6,12}\b/);
+        if (m) { nuip = m[0]; break; }
+      }
+    }
+    // Fallback: si no aparece C.C., busca cualquier número "candidato" (6-12 dígitos)
+    if (!nuip) {
+      const joined = lines.join(" ");
+      const m = joined.match(/\b\d{6,12}\b/);
+      if (m) nuip = m[0];
+    }
+
+    // 2) Valores por etiqueta
+    const departamento = kv["DEPARTAMENTO"] || "";
+    const municipio    = kv["MUNICIPIO"] || "";
+    const puesto       = kv["PUESTO"] || "";
+    const direccion    = kv["DIRECCION"] || kv["DIRECCIÓN"] || "";
+    const mesa         = kv["MESA"] || "";
+
+    // Si falta alguno, no autocompleta (tu intentarAutocompletar solo llena cuando length === 6)
+    if (![nuip, departamento, municipio, puesto, direccion, mesa].every(v => String(v).trim().length > 0)) {
+      return [];
+    }
+
+    // Devuelve en el orden esperado por intentarAutocompletar()
+    return [nuip, departamento, municipio, puesto, direccion, mesa];
+  }
     function intentarAutocompletar() {
       const textarea = document.getElementById('datos_row');
       const pasted = textarea.value.trim();
