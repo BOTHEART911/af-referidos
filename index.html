@@ -130,6 +130,8 @@
     .btn-votacion.azul { background-color: #007BFF !important; }
     .btn-votacion.gris { background-color: #6c757d !important; color: #fff !important; }
     .btn-votacion.naranja { background-color: #f39c12 !important; color: #fff !important; }
+    .btn-votacion.verde-claro { background-color: #7DCE82 !important; } /* verde claro */
+    
 
     .btn-whatsapp {
       background: #25D366 !important;
@@ -718,19 +720,31 @@
             orderable: false,
             searchable: false,
             className: 'text-center',
-            render: function(data, type, row, meta) {
-              var idxMunicipio = encabezados.indexOf("MUNICIPIO");
-              var municipio = "";
-              if (idxMunicipio > -1) {
-                municipio = (row[idxMunicipio] || "").toString().trim().toUpperCase();
-              }
-              var colorClass =
-                municipio === "A LA ESPERA"   ? "gris"    :
-                municipio === "POR CONFIRMAR" ? "naranja" :
-                municipio === "SIN CONSULTAR" ? "azul"    :
-                municipio === "FLANDES"       ? "verde"   : "";
-              return `<button class="btn-votacion${colorClass ? ' ' + colorClass : ''}" data-row="${meta.row}" onclick="abrirModalVotacion(${meta.row})">Votación</button>`;
-            }
+           render: function(data, type, row, meta) {
+    var idxMunicipio = encabezados.indexOf("MUNICIPIO");
+    var idxDepartamento = encabezados.indexOf("DEPARTAMENTO");
+
+    var municipio = "";
+    var departamento = "";
+
+    if (idxMunicipio > -1) {
+      municipio = (row[idxMunicipio] || "").toString().trim().toUpperCase();
+    }
+    if (idxDepartamento > -1) {
+      departamento = (row[idxDepartamento] || "").toString().trim().toUpperCase();
+    }
+
+    // Mantener condiciones por municipio + nueva condición por departamento
+    var colorClass =
+      municipio === "A LA ESPERA"   ? "gris"       :
+      municipio === "POR CONFIRMAR" ? "naranja"    :
+      municipio === "SIN CONSULTAR" ? "azul"       :
+      municipio === "FLANDES"       ? "verde"      :
+      departamento === "TOLIMA"     ? "verde-claro":
+      "";
+
+    return `<button class="btn-votacion${colorClass ? ' ' + colorClass : ''}" data-row="${meta.row}" onclick="abrirModalVotacion(${meta.row})">Votación</button>`;
+  }
           },
           {
             targets: idxWhatsapp,
